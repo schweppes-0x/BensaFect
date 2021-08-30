@@ -39,10 +39,10 @@ public class BensaFect extends ExtensionForm {
     @Override
     protected void onHide() {
         itemId = -1;
-        stopSchedule();
         Platform.runLater(()->{
             toggleButton.textProperty().setValue("Not Ready");
             toggleButton.styleProperty().setValue("-fx-background-color:#FFAAAA");
+            toggleButton.setSelected(false);
         });
     }
 
