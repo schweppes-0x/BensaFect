@@ -37,6 +37,16 @@ public class BensaFect extends ExtensionForm {
     private HPacket pickUpPacket;
 
     @Override
+    protected void onHide() {
+        itemId = -1;
+        stopSchedule();
+        Platform.runLater(()->{
+            toggleButton.textProperty().setValue("Not Ready");
+            toggleButton.styleProperty().setValue("-fx-background-color:#FFAAAA");
+        });
+    }
+
+    @Override
     protected void initExtension() {
         super.initExtension();
         onConnect((host, i, s1, s2, hClient) -> {
@@ -80,9 +90,6 @@ public class BensaFect extends ExtensionForm {
             }
         });
 
-        intercept(HMessage.Direction.TOSERVER, "PlaceObject", (hMessage)->{
-
-        });
         intercept(HMessage.Direction.TOCLIENT, "ObjectAdd", (hMessage1 -> {
             //Check if Totem Planet already found
             if(itemId != -1)
@@ -111,12 +118,6 @@ public class BensaFect extends ExtensionForm {
     }
 
     public void toggleStart(ActionEvent actionEvent) {
-        /*TODO implement start
-          1. put item on ground (150ms) {out:PlaceObject}{s:"-itemId X Y 0"}
-          2. use item (150ms) {out:UseFurniture}{i:itemId}{i:0}
-          3. pickup (150ms) {out:PickupObject}{i:2}{i:itemId}
-        * */
-
         if(itemId == -1)
             return;
 
