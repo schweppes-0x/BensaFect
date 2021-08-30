@@ -37,6 +37,16 @@ public class BensaFect extends ExtensionForm {
     private HPacket pickUpPacket;
 
     @Override
+    protected void onHide() {
+        itemId = -1;
+        Platform.runLater(()->{
+            toggleButton.textProperty().setValue("Not Ready");
+            toggleButton.styleProperty().setValue("-fx-background-color:#FFAAAA");
+            toggleButton.setSelected(false);
+        });
+    }
+
+    @Override
     protected void initExtension() {
         super.initExtension();
         onConnect((host, i, s1, s2, hClient) -> {
@@ -80,9 +90,6 @@ public class BensaFect extends ExtensionForm {
             }
         });
 
-        intercept(HMessage.Direction.TOSERVER, "PlaceObject", (hMessage)->{
-
-        });
         intercept(HMessage.Direction.TOCLIENT, "ObjectAdd", (hMessage1 -> {
             //Check if Totem Planet already found
             if(itemId != -1)
